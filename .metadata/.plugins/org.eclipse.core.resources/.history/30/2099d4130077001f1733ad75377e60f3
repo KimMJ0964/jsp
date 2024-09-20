@@ -1,0 +1,12 @@
+package com.kh.board.model.vo;
+
+public class Board {
+	private int boardNo;
+	private int boardType;
+	private String category;	// 카테고리 번호 | 카테고리 명
+	private String boardTitle;
+	private String boardContent;
+	private String boardWriter; // 작성시 회원 번호 | 조회 회원 아이디
+	private int count;
+	private int
+}

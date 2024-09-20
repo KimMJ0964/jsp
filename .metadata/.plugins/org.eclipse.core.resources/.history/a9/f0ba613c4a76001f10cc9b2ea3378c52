@@ -1,0 +1,110 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .outer {
+            background-color: black;
+            color: white;
+            width: 1000px;
+            margin: auto;
+            margin-top : 50px;
+            padding: 0px;
+        }
+    </style>
+</head>
+<body>
+        <%include file="../common/menubar.jsp" %>
+
+        <div class="outer">
+            <br>
+            <h2 align="center">회원가입</h2>
+
+            <form action="" method="post">
+                <table>
+                    <tr>
+                        <td>* 아이디</td>
+                        <td><input type="text" name="userId" maxlength="12" required></td>
+                        <td><button type="button" onclick="">중복확인</button></td>
+                    </tr>
+                    <tr>
+                        <td>* 비밀번호</td>
+                        <td><input type="password" name="userPwd" maxlength="15" required></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>* 비밀번호 확인</td>
+                        <td><input type="password" name="userPwdCheck" maxlength="15" required></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>* 이름</td>
+                        <td><input type="text" name="userName" maxlength="6" required></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>전화번호</td>
+                        <td><input type="text" name="phone" placeholder="- 포함해서 입력"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>이메일</td>
+                        <td><input type="email" name="email"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>주소</td>
+                        <td><input type="text" name="address"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>관심분야</td>
+                        <td>
+                            <label>
+                                <input type="checkbox" name="interest" id="sports" value="운동"></td>
+                                운동
+                            </label>
+                            <label>
+                                <input type="checkbox" name="interest" id="sports" value="등산"></td>
+                                등산
+                            </label>
+                            <label>
+                                <input type="checkbox" name="interest" id="sports" value="낚시"></td>
+                                낚시
+                            </label>
+                            <label>
+                                <input type="checkbox" name="interest" id="sports" value="요리"></td>
+                                요리
+                            </label>
+                            <label>
+                                <input type="checkbox" name="interest" id="sports" value="게임"></td>
+                                게임
+                            </label>
+                            <label>
+                                <input type="checkbox" name="interest" id="sports" value="영화"></td>
+                                영화
+                            </label>
+                            <label>
+                                <input type="checkbox" name="interest" id="sports" value="기타"></td>
+                                기타
+                            </label>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <b2></b2>
+                <b2></b2>
+
+                <div>
+                    <button type="submit">회원가입</button>
+                    <button type="rest">초기화</button>
+                </div>
+            </form>
+        </div>
+</body>
+</html>

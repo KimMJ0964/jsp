@@ -1,0 +1,10 @@
+package com.kh.board.service;
+
+import static com.kh.common.JDBCTemplate.*;
+
+public class BoardService {
+	
+	public int selectListCount() {
+		Connection conn = getConnection();
+	}
+}
