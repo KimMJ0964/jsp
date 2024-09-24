@@ -343,7 +343,7 @@
                             <td><%=b.getTitle()%></td>
                             <td><%=b.getMemId()%></td>
                             <td><%=b.getViewCount()%></td>
-                            <td><%=b.getCreateDate()%></td>
+                            <td><%=b.getCreateDate() %></td>
                         </tr>
                     <% } %>
                 <% } %>

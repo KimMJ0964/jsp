@@ -1,8 +1,0 @@
-package com.kh.board.service;
-
-public class BoardService {
-	
-	public int selectListCount() {
-		
-	}
-}

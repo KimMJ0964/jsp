@@ -15,7 +15,8 @@
 		                   VIEW_COUNT,
 		                   LIKE_COUNT,
 		                   CREATE_DATE,
-		                   UPDATE_DATE
+		                   UPDATE_DATE,
+		                   TYPE
 		              FROM COMMUNITY B
 		             ORDER BY COMM_NO DESC) A)
 		WHERE RNUM BETWEEN ? AND ?
@@ -33,6 +34,23 @@
 		SELECT *
           FROM COMMUNITY
          WHERE COMM_NO = ?
+	</entry>
+	<entry key="insertBoardFile">
+		INSERT
+		INTO COMMUNITY_FILE (
+						FILE_NO,
+						REF_BNO,
+						ORIGIN_NAME,
+						CHANGE_NAME,
+						FILE_PATH
+						)
+					VALUES(
+						COMMUNITY_FILE_SEQ_NEW.NEXTVAL,
+						COMMUNITY_SEQ_NEW.CURRVAL,
+						?,
+						?,
+						?
+					)
 	</entry>
 </properties>
 

@@ -9,11 +9,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import com.kh.board.model.vo.Board;
 
 import common.PageInfo;
 
@@ -90,6 +90,8 @@ private Properties prop = new Properties();
 				b.setTitle(rset.getString("title"));
 				b.setViewCount(rset.getInt("view_count"));
 				b.setLikeCount(rset.getInt("like_count"));
+				b.setCreateDate(rset.getString("create_date"));
+				b.setType(rset.getString("type"));
 				list.add(b);
 			}
 		} catch (SQLException e) {
@@ -102,11 +104,11 @@ private Properties prop = new Properties();
 		return list;
 	}
 	
-	public int createBoard(Connection conn, String memId, String title, String content) {
+	public int createBoard(Connection conn, String memId, String title, String content, String postType) {
 //		String sql = prop.getProperty("createBoard");
 		
-		 String sql = "INSERT INTO COMMUNITY (COMM_NO, MEM_ID, TITLE, CONTENT, CREATE_DATE) "
-	               + "VALUES (COMMUNITY_SEQ_NEW.NEXTVAL, ?, ?, ?, SYSDATE)";
+		 String sql = "INSERT INTO COMMUNITY (COMM_NO, MEM_ID, TITLE, CONTENT, TYPE, CREATE_DATE) "
+	               + "VALUES (COMMUNITY_SEQ_NEW.NEXTVAL, ?, ?, ?, ?, SYSDATE)";
 	    PreparedStatement pstmt = null;
 	    ResultSet rset = null;
 	    int rowsAffected = 0;
@@ -116,7 +118,8 @@ private Properties prop = new Properties();
 	        pstmt.setString(1, memId);
 	        pstmt.setString(2, title);
 	        pstmt.setString(3, content);
-	        System.out.println(memId + ", " + title + ", " + content);
+	        pstmt.setString(4, postType);
+	        System.out.println(memId + ", " + title + ", " + content + ", " + postType);
 	        
 	        rowsAffected = pstmt.executeUpdate();
 	        
@@ -156,7 +159,14 @@ private Properties prop = new Properties();
 	            board.setCommNo(rs.getInt("COMM_NO")); // 컬럼명 대문자 사용
 	            board.setMemId(rs.getString("MEM_ID"));
 	            board.setTitle(rs.getString("TITLE"));
-	            board.setCreateDate(rs.getString("CREATE_DATE"));
+	            Date createDate = rs.getDate("CREATE_DATE");
+	            if (createDate != null) {
+	                SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd"); // 원하는 형식으로 설정
+	                String formattedDate = sdf.format(createDate);
+	                board.setCreateDate(formattedDate); // String으로 설정
+	            } else {
+	                board.setCreateDate(null); // null 처리
+	            }
 	            posts.add(board);
 	        }
 	    } catch (SQLException e) {
@@ -207,7 +217,8 @@ private Properties prop = new Properties();
 						rset.getString("create_date"),
 						rset.getInt("view_count"),
 						rset.getInt("like_count"),
-						rset.getString("content")
+						rset.getString("content"),
+						rset.getString("type")
 					);
 			}
 			System.out.println("확인" + b);
@@ -219,6 +230,54 @@ private Properties prop = new Properties();
 		}
 		
 		return b;
+	}
+	
+	public int insertBoard(Connection conn, Board b) {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		String sql = "INSERT INTO COMMUNITY (COMM_NO, TITLE, CONTENT, TYPE, MEM_ID, CREATE_DATE) "
+	               + "VALUES (COMMUNITY_SEQ_NEW.NEXTVAL, ?, ?, ?, ?, SYSDATE)";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, b.getTitle());
+			pstmt.setString(2, b.getContent());
+			pstmt.setString(3, b.getType());
+			pstmt.setString(4, b.getMemId());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	public int insertBoardFile(Connection conn, BoardFile bf) {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("insertBoardFile");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, bf.getOriginName());
+			pstmt.setString(2, bf.getChangeName());
+			pstmt.setString(3, bf.getFilePath());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 
 }

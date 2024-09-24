@@ -142,7 +142,7 @@
                 <tr> 
                     <td style="background-color: #ececec;">아이디: <%=b.getMemId() %></td>
                     <td style="background-color: #ececec;">작성일: <%=b.getCreateDate() %></td>
-                    <td style="background-color: #ececec;">유형: QnA</td>
+                    <td style="background-color: #ececec;">유형: <%=b.getType() %></td>
                     <td style="background-color: #ececec;">조회수: <%=b.getViewCount() %></td>
                     <td style="background-color: #ececec;">좋아요: <%=b.getLikeCount() %></td>
                 </tr>
@@ -151,6 +151,15 @@
             <div class="post-content">
                 <%=b.getContent() %>
             </div>
+            <table style="background-color: white;">
+	            <tr>
+	            	<th>첨부파일</th>
+	            	<td colspan="6">
+	          
+	                </td>
+	            </tr>
+	        </table>
+	        <br>
         </div>
 
         <!-- Comment Section -->

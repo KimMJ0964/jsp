@@ -29,12 +29,12 @@ public class BoardService {
 		return list;
 	}
 	
-	public int createBoard(String memId, String title, String content) {
+	public int createBoard(String memId, String title, String content, String postType) {
 		Connection conn = getConnection();
         
         // DAO를 통해 DB에 게시글 생성 요청
         int isCreate = 0;
-        isCreate = new BoardDao().createBoard(conn, memId, title, content);
+        isCreate = new BoardDao().createBoard(conn, memId, title, content, postType);
         
         return isCreate;
     }
@@ -60,5 +60,25 @@ public class BoardService {
 		close(conn);
 		
 		return b;
+	}
+	
+	public int insertBoard(Board b, BoardFile bf) {
+		Connection conn = getConnection();
+		BoardDao bDao = new BoardDao();
+		
+		int result1 = bDao.insertBoard(conn, b);
+		int result2 = 1;
+		
+		if(bf != null) {
+			result2 = bDao.insertBoardFile(conn, bf);
+		}
+		
+		if(result1 > 0 && result2 > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		return result1 *  result2;
 	}
 }

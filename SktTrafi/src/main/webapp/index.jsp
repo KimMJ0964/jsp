@@ -45,7 +45,7 @@
 	        </form>
 
     <!-- boardMainPage.jsp로 이동하는 링크 -->
-    <a href="<%=contextPath %>/board.bo?cpage=1">"Board Main Page</a>
+    <a href="<%=contextPath %>/board.bo?cpage=1">게시글 페이지</a>
 
 </div>
 

@@ -8,9 +8,20 @@
     <fullyQualifiedTypeName name="jakarta.servlet.http.HttpSession"/>
     <fullyQualifiedTypeName name="com.kh.member.controller.MemberDeleteController"/>
     <fullyQualifiedTypeName name="com.kh.common.JDBCTemplate"/>
-    <fullyQualifiedTypeName name="com.kh.board.service.BoardService"/>
     <fullyQualifiedTypeName name="com.kh.board.model.dao.BoardDao"/>
     <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
     <fullyQualifiedTypeName name="com.oreilly.servlet.MultipartRequest"/>
     <fullyQualifiedTypeName name="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"/>
+    <fullyQualifiedTypeName name="org.apache.commons.fileupload2.jakarta.JakartaServletDiskFileUpload"/>
+    <fullyQualifiedTypeName name="org.apache.commons.fileupload2.core.DiskFileItemFactory.Builder"/>
+    <fullyQualifiedTypeName name="org.apache.commons.fileupload2.core.DiskFileItemFactory"/>
+    <fullyQualifiedTypeName name="org.apache.commons.fileupload2.jakarta.JakartaServletFileUpload"/>
+    <fullyQualifiedTypeName name="org.apache.commons.fileupload2.core.FileItem"/>
+    <fullyQualifiedTypeName name="com.kh.board.model.vo.Board"/>
+    <fullyQualifiedTypeName name="java.nio.charset.Charset"/>
+    <fullyQualifiedTypeName name="javax.naming.ldap.PagedResultsResponseControl"/>
+    <fullyQualifiedTypeName name="com.kh.board.model.vo.Attachment"/>
+    <fullyQualifiedTypeName name="com.kh.board.service.BoardService"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="board.BoardFile"/>
 </qualifiedTypeNameHistroy>

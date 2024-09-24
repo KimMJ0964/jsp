@@ -9,22 +9,24 @@ public class Board {
 	private int likeCount;
 	private String createDate;
 	private String updateDate;
+	private String type;
 	
 	public Board() {
 		super();
 	}
 	
-	public Board(String title, String memId, String createDate, int viewCount, int likeCount, String content) {
+	public Board(String title, String memId, String createDate, int viewCount, int likeCount, String content, String type) {
 		this.title = title;
 		this.memId = memId;
 		this.createDate = createDate;
 		this.viewCount = viewCount;
 		this.likeCount = likeCount;
 		this.content = content;
+		this.type = type;
 	}
 	
 	public Board(int commNo, String memId, String title, String content, int viewCount, int likeCount,
-			String createDate, String updateDate) {
+			String createDate, String updateDate, String type) {
 		super();
 		this.commNo = commNo;
 		this.memId = memId;
@@ -34,6 +36,7 @@ public class Board {
 		this.likeCount = likeCount;
 		this.createDate = createDate;
 		this.updateDate = updateDate;
+		this.type = type;
 	}
 
 	public int getCommNo() {
@@ -100,10 +103,18 @@ public class Board {
 		this.updateDate = updateDate;
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	@Override
 	public String toString() {
 		return "Board [commNo=" + commNo + ", memId=" + memId + ", title=" + title + ", content=" + content
 				+ ", viewCount=" + viewCount + ", likeCount=" + likeCount + ", createDate=" + createDate
-				+ ", updateDate=" + updateDate + "]";
+				+ ", updateDate=" + updateDate + ", type=" + type + "]";
 	}
 }
