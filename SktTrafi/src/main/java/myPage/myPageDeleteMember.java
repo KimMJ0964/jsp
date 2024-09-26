@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.Member;
-import member.MemberService;
+import member.MemberServiceImpl;
 
 public class myPageDeleteMember extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +27,7 @@ public class myPageDeleteMember extends HttpServlet {
         // 비밀번호 확인
         String userPwd = request.getParameter("userPwd");
         
-        MemberService memberService = new MemberService();
+        MemberServiceImpl memberService = new MemberServiceImpl();
         Member member = memberService.getMemberById(memId);
         
         // 비밀번호가 맞으면 삭제

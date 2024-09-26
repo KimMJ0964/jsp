@@ -2,11 +2,13 @@ package board;
 
 import static common.JDBCTemplate.*;
 
+import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 import common.PageInfo;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 public class BoardService {
@@ -80,5 +82,48 @@ public class BoardService {
 		}
 		
 		return result1 *  result2;
+	}
+	
+	public int deleteBoard(HttpServletRequest request, int boardNo) {
+		Connection conn = getConnection();
+		BoardDao bDao = new BoardDao();
+		
+		int result = bDao.deleteBoard(conn, boardNo);
+		String[] result3 = bDao.deleteBoardFileTwo(conn, boardNo);
+		int result2 = bDao.deleteBoardFile(conn, boardNo);
+		
+		String changeName = result3[0]; // 변경된 파일명
+        String filePath = result3[1];   // 파일 경로
+         
+        String savePath = request.getServletContext().getRealPath("/" + filePath);
+        
+        System.out.println(savePath + changeName);
+         // 서버에서 파일 삭제
+        File file = new File(savePath + changeName);
+		
+		if(result > 0) {
+			 if (file.exists()) {
+                 if (file.delete()) {
+                     System.out.println("파일 삭제 성공: " + savePath + changeName);
+                 } else {
+                     System.out.println("파일 삭제 실패: " + savePath + changeName);
+                 }
+             } else {
+                 System.out.println("파일이 존재하지 않습니다: " + savePath + changeName);
+             }
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		close(conn);
+	
+		return result;
+	}
+	
+	public BoardFile fileDownload(int boardNo) {
+		Connection conn = getConnection();
+		BoardFileDao bfDao = new BoardFileDao();
+		
+		BoardFile bf = bfDao.fileDownload(conn, boardNo);
 	}
 }

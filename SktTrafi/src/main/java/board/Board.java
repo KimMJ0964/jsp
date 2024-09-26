@@ -15,7 +15,8 @@ public class Board {
 		super();
 	}
 	
-	public Board(String title, String memId, String createDate, int viewCount, int likeCount, String content, String type) {
+	public Board(int commNo, String title, String memId, String createDate, int viewCount, int likeCount, String content, String type) {
+		this.commNo = commNo;
 		this.title = title;
 		this.memId = memId;
 		this.createDate = createDate;

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.ibatis.session.SqlSession;
+
 import static common.JDBCTemplate.*;
 
 public class MemberDao {
@@ -41,29 +43,12 @@ public class MemberDao {
         return member;
     }
 
-	public int updateMember(Connection conn, Member member) {
-		PreparedStatement pstmt = null;
-        int result = 0;
-
-        String sql = "UPDATE MEMBER SET mem_name = ?, phone = ?, address = ?, mem_no = ?, email = ? WHERE mem_id = ?";
-
-        try {
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, member.getMemName());
-            pstmt.setString(2, member.getPhone());
-            pstmt.setString(3, member.getAddress());
-            pstmt.setString(4, member.getMemNo());
-            pstmt.setString(5, member.getEmail());
-            pstmt.setString(6, member.getMemId());
-
-            result = pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(pstmt);
-        }
-
-        return result;
+	public Member updateMember(SqlSession sqlSession, Member member) {
+		System.out.println("UpdateDaoResult member : " + member);
+		Member UpdateDaoResult = sqlSession.update("memberMapper.updateMember", member);
+		System.out.println("UpdateDaoResult : " + UpdateDaoResult);
+		
+		return UpdateDaoResult;
     }
 	
 	// 회원 정보 가져오기

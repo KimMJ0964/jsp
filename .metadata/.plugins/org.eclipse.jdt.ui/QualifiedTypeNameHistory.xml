@@ -3,13 +3,11 @@
     <fullyQualifiedTypeName name="jakarta.servlet.RequestDispatcher"/>
     <fullyQualifiedTypeName name="java.sql.Statement"/>
     <fullyQualifiedTypeName name="java.sql.Date"/>
-    <fullyQualifiedTypeName name="com.kh.member.model.vo.Member"/>
     <fullyQualifiedTypeName name="java.sql.SQLException"/>
     <fullyQualifiedTypeName name="jakarta.servlet.http.HttpSession"/>
     <fullyQualifiedTypeName name="com.kh.member.controller.MemberDeleteController"/>
     <fullyQualifiedTypeName name="com.kh.common.JDBCTemplate"/>
     <fullyQualifiedTypeName name="com.kh.board.model.dao.BoardDao"/>
-    <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
     <fullyQualifiedTypeName name="com.oreilly.servlet.MultipartRequest"/>
     <fullyQualifiedTypeName name="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"/>
     <fullyQualifiedTypeName name="org.apache.commons.fileupload2.jakarta.JakartaServletDiskFileUpload"/>
@@ -21,7 +19,14 @@
     <fullyQualifiedTypeName name="java.nio.charset.Charset"/>
     <fullyQualifiedTypeName name="javax.naming.ldap.PagedResultsResponseControl"/>
     <fullyQualifiedTypeName name="com.kh.board.model.vo.Attachment"/>
-    <fullyQualifiedTypeName name="com.kh.board.service.BoardService"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="board.BoardFile"/>
+    <fullyQualifiedTypeName name="com.kh.board.service.BoardService"/>
+    <fullyQualifiedTypeName name="com.google.gson.JsonArray"/>
+    <fullyQualifiedTypeName name="org.json.simple.JSONArray"/>
+    <fullyQualifiedTypeName name="com.kh.member.model.vo.Member"/>
+    <fullyQualifiedTypeName name="com.kh.board.model.vo.Reply"/>
+    <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
+    <fullyQualifiedTypeName name="java.lang.Override"/>
+    <fullyQualifiedTypeName name="org.apache.ibatis.session.SqlSession"/>
 </qualifiedTypeNameHistroy>

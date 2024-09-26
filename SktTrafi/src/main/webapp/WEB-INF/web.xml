@@ -83,4 +83,14 @@
     <servlet-name>detail.bo</servlet-name>
     <url-pattern>/detail.bo</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>deleteBoard.bo</display-name>
+    <servlet-name>deleteBoard.bo</servlet-name>
+    <servlet-class>board.BoardDeleteController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>deleteBoard.bo</servlet-name>
+    <url-pattern>/deleteBoard.bo</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -1,2 +1,4 @@
-/board/
-/db/
+/mybatis-config.xml
+/mappers/
+/myPage/
+/member/

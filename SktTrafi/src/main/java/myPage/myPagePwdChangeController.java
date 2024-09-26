@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import member.Member;
-import member.MemberService;
+import member.MemberServiceImpl;
 
 public class myPagePwdChangeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -29,7 +29,7 @@ public class myPagePwdChangeController extends HttpServlet {
 	        String currentPwd = request.getParameter("userPwd");
 	        String newPwd = request.getParameter("updatePwd");
 	        
-	        MemberService memberService = new MemberService();
+	        MemberServiceImpl memberService = new MemberServiceImpl();
 	        Member member = memberService.getMemberById(memId);
 	        
 	        // 현재 비밀번호가 일치하는지 확인

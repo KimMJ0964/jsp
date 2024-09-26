@@ -212,6 +212,7 @@ private Properties prop = new Properties();
 			rset = pstmt.executeQuery();
 			if(rset.next()) {
 				b = new Board(
+						rset.getInt("comm_no"),
 						rset.getString("title"),
 						rset.getString("mem_id"),
 						rset.getString("create_date"),
@@ -278,6 +279,75 @@ private Properties prop = new Properties();
 		}
 		
 		return result;
+	}
+	
+	public int deleteBoard(Connection conn, int boardNo) {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("deleteBoard");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, boardNo);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	public int deleteBoardFile(Connection conn, int boardNo) {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("deleteBoardFile");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, boardNo);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	public String[] deleteBoardFileTwo(Connection conn, int boardNo) {
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+        String[] fileDetails = new String[2];
+		String sql = prop.getProperty("deleteBoardFileSelect");
+		
+		try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, boardNo); // 게시글 번호로 파일 조회
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                fileDetails[0] = rset.getString("CHANGE_NAME"); // 변경된 파일명
+                fileDetails[1] = rset.getString("FILE_PATH");   // 파일 경로
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rset != null) rset.close();
+                if (pstmt != null) pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return fileDetails; // 파일명과 경로 반환
 	}
 
 }
