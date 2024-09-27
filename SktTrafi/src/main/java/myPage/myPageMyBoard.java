@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import board.Board;
-import board.BoardService;
+import board.BoardServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -30,7 +30,7 @@ public class myPageMyBoard extends HttpServlet {
             return;
         }
 
-        BoardService boardservice = new BoardService();
+        BoardServiceImpl boardservice = new BoardServiceImpl();
         List<Board> postList = boardservice.getPostsByMemberId(memId);
 
         request.setAttribute("postList", postList);

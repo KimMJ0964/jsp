@@ -43,9 +43,9 @@ public class MemberDao {
         return member;
     }
 
-	public Member updateMember(SqlSession sqlSession, Member member) {
+	public int updateMember(SqlSession sqlSession, Member member) {
 		System.out.println("UpdateDaoResult member : " + member);
-		Member UpdateDaoResult = sqlSession.update("memberMapper.updateMember", member);
+		int UpdateDaoResult = sqlSession.update("memberMapper.updateMember", member);
 		System.out.println("UpdateDaoResult : " + UpdateDaoResult);
 		
 		return UpdateDaoResult;

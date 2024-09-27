@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+
 import common.PageInfo;
 
 public class BoardDao {
@@ -30,79 +33,40 @@ private Properties prop = new Properties();
 		}
 	}
 	
-	public int selectListCount(Connection conn) {
-		// select -> resultset(한행) -> int
-		
-		int listCount = 0;
-		
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		
-		String sql = prop.getProperty("selectListCount");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			rset = pstmt.executeQuery();
-			
-			if(rset.next()) {
-				listCount = rset.getInt("count");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(rset);
-			close(pstmt);
-		}
-		
-		return listCount;
+	public int selectListCount(SqlSession sqlSession) {
+		return sqlSession.selectOne("boardMapper.selectListCount");
 	}
 	
-	public ArrayList<Board> selectList(Connection conn, PageInfo pi) {
-		// Select -> ResultSet(여러행) -> ArrayList<Board>
+	public ArrayList<Board> selectList(SqlSession sqlSession, PageInfo pi) {
 		
-		ArrayList<Board> list = new ArrayList<>();
-		
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		
-		String sql = prop.getProperty("selectList");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			/*
-			 * currentPage : 1 -> 1~10
-			 * currentPage : 2 -> 11~20
-			 * currentPage : 3 -> 21~30 
-			 */
-			
-			int startRow = (pi.getCurrentPage() - 1) * pi.getBoardLimit() + 1;
-			int endRow = startRow + pi.getBoardLimit() - 1;
-			
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, endRow);
-			
-			rset = pstmt.executeQuery();
-			
-			while(rset.next()) {
-				Board b = new Board();
-				b.setCommNo(rset.getInt("comm_no"));
-				b.setMemId(rset.getString("mem_id"));
-				b.setTitle(rset.getString("title"));
-				b.setViewCount(rset.getInt("view_count"));
-				b.setLikeCount(rset.getInt("like_count"));
-				b.setCreateDate(rset.getString("create_date"));
-				b.setType(rset.getString("type"));
-				list.add(b);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(rset);
-			close(pstmt);
-		}
-		
-		return list;
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return (ArrayList)sqlSession.selectList("boardMapper.selectList", null, rowBounds);
 	}
+	
+	public int increaseCount(SqlSession sqlSession, int boardNo) {
+		return sqlSession.update("boardMapper.increaseCount", boardNo);
+		// 업데이트되면 1출력
+	}
+	
+	public Board selectBoard(SqlSession sqlSession, int boardNo) {
+		return sqlSession.selectOne("boardMapper.selectBoard", boardNo);
+	}
+	
+	public ArrayList<Board> selectMyPageBoardList(SqlSession sqlSession, String loginId) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectMyPageBoardList", loginId);
+	}
+	
+	public int insertBoard(SqlSession sqlSession, Board b) {
+		return sqlSession.insert("boardMapper.insertBoard", b);
+	}
+	
+	public int insertBoardFile(SqlSession sqlSession, BoardFile bf) {
+		return  sqlSession.insert("boardMapper.insertBoardFile", bf);
+	}
+	
+	// ---------------------- 마이바티스 --------------------------------------------
 	
 	public int createBoard(Connection conn, String memId, String title, String content, String postType) {
 //		String sql = prop.getProperty("createBoard");
@@ -178,108 +142,7 @@ private Properties prop = new Properties();
 	    return posts;
 	}
 	
-	public int increaseCount(Connection conn, int boardNo) {
-		int result = 0;
-		PreparedStatement pstmt = null;
-		
-		String sql = prop.getProperty("increaseCount");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, boardNo);
-			
-			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-		}
-		
-		return result;
-	}
 	
-	public Board selectBoard(Connection conn, int boardNo) {
-		ResultSet rset = null;
-		Board b = null;
-		
-		PreparedStatement pstmt = null;
-		String sql = prop.getProperty("selectBoard");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, boardNo);
-			
-			rset = pstmt.executeQuery();
-			if(rset.next()) {
-				b = new Board(
-						rset.getInt("comm_no"),
-						rset.getString("title"),
-						rset.getString("mem_id"),
-						rset.getString("create_date"),
-						rset.getInt("view_count"),
-						rset.getInt("like_count"),
-						rset.getString("content"),
-						rset.getString("type")
-					);
-			}
-			System.out.println("확인" + b);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(rset);
-			close(pstmt);
-		}
-		
-		return b;
-	}
-	
-	public int insertBoard(Connection conn, Board b) {
-		int result = 0;
-		
-		PreparedStatement pstmt = null;
-		String sql = "INSERT INTO COMMUNITY (COMM_NO, TITLE, CONTENT, TYPE, MEM_ID, CREATE_DATE) "
-	               + "VALUES (COMMUNITY_SEQ_NEW.NEXTVAL, ?, ?, ?, ?, SYSDATE)";
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, b.getTitle());
-			pstmt.setString(2, b.getContent());
-			pstmt.setString(3, b.getType());
-			pstmt.setString(4, b.getMemId());
-			
-			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-		}
-		
-		return result;
-	}
-	
-	public int insertBoardFile(Connection conn, BoardFile bf) {
-		int result = 0;
-		
-		PreparedStatement pstmt = null;
-		String sql = prop.getProperty("insertBoardFile");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, bf.getOriginName());
-			pstmt.setString(2, bf.getChangeName());
-			pstmt.setString(3, bf.getFilePath());
-			
-			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-		}
-		
-		return result;
-	}
 	
 	public int deleteBoard(Connection conn, int boardNo) {
 		int result = 0;

@@ -1,1 +1,89 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="boardMapper">
+	<resultMap id="boardResultSet" type="Board">
+		<result column="COMM_NO" property="commNo" />
+		<result column="MEM_ID" property="memId" />
+		<result column="TITLE" property="title" />
+		<result column="CONTENT" property="content" />
+		<result column="VIEW_COUNT" property="viewCount" />
+		<result column="LIKE_COUNT" property="likeCount" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="UPDATE_DATE" property="updateDate" />
+		<result column="TYPE" property="type" />
+	</resultMap>
+	
+  	<select id="selectListCount" resultType="_int">
+  		SELECT COUNT(*)
+  		  FROM COMMUNITY
+  	</select>
+  	
+  	<select id="selectList" resultMap="boardResultSet">
+  		SELECT COMM_NO,
+  			   TITLE,
+  			   MEM_ID,
+  			   VIEW_COUNT,
+  			   LIKE_COUNT,
+  			   CREATE_DATE,
+  			   TYPE
+  		  FROM COMMUNITY
+  		 ORDER BY COMM_NO DESC
+  	</select>
+  	
+  	<update id="increaseCount" parameterType="_int">
+  		UPDATE COMMUNITY
+  		   SET VIEW_COUNT = VIEW_COUNT + 1
+  		 WHERE COMM_NO = #{boardNo}
+  	</update>
+  	
+  	<select id="selectBoard" parameterType="_int" resultMap="boardResultSet">
+  		SELECT COMM_NO,
+  			   TITLE,
+  			   MEM_ID,
+  			   VIEW_COUNT,
+  			   LIKE_COUNT,
+  			   CREATE_DATE,
+  			   TYPE,
+  			   CONTENT
+  		  FROM COMMUNITY
+  		 WHERE COMM_NO = #{boardNo}
+  	</select>
+  	
+  	<select id="selectMyPageBoardList" resultMap="boardResultSet">
+  	SELECT COMM_NO,
+  			   TITLE,
+  			   MEM_ID,
+  			   VIEW_COUNT,
+  			   LIKE_COUNT,
+  			   CREATE_DATE,
+  			   TYPE
+  		  FROM COMMUNITY
+  		  WHERE MEM_ID = #{loginId}
+  		 ORDER BY COMM_NO DESC
+  	</select>
+  	
+  	 <insert id="insertBoard" parameterType="Board">
+        INSERT INTO COMMUNITY (COMM_NO, TITLE, CONTENT, TYPE, MEM_ID, CREATE_DATE) 
+        VALUES (COMMUNITY_SEQ_NEW.NEXTVAL, #{title}, #{content}, #{type}, #{memId}, SYSDATE)
+    </insert>
+
+    <insert id="insertBoardFile" parameterType="BoardFile">
+        INSERT INTO COMMUNITY_FILE (
+            FILE_NO,
+            REF_BNO,
+            ORIGIN_NAME,
+            CHANGE_NAME,
+            FILE_PATH
+        ) VALUES (
+            COMMUNITY_FILE_SEQ_NEW.NEXTVAL,
+            COMMUNITY_SEQ_NEW.CURRVAL,
+            #{originName},
+            #{changeName},
+            #{filePath}
+        )
+    </insert>
+  	
+</mapper>

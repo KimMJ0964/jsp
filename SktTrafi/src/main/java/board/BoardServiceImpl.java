@@ -1,35 +1,93 @@
 package board;
 
-import static common.JDBCTemplate.*;
+import static common.JDBCTemplate.close;
+import static common.JDBCTemplate.commit;
+import static common.JDBCTemplate.getConnection;
+import static common.JDBCTemplate.rollback;
 
 import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+
 import common.PageInfo;
+import common.Template;
 import jakarta.servlet.http.HttpServletRequest;
 
 
-public class BoardService {
+public class BoardServiceImpl implements BoardService{
+	private BoardDao bDao = new BoardDao();
 	
+	@Override
 	public int selectListCount() {
-		Connection conn = getConnection();
+		SqlSession sqlSession = Template.getSqlSession();
+		int listCount = bDao.selectListCount(sqlSession);
 		
-		int listCount = new BoardDao().selectListCount(conn);
-		close(conn);
-		
+		sqlSession.close();
 		return listCount;
 	}
 	
+	@Override
 	public ArrayList<Board> selectList(PageInfo pi) {
-		Connection conn = getConnection();
+		SqlSession sqlSession = Template.getSqlSession();
+		ArrayList<Board> list = bDao.selectList(sqlSession, pi);
 		
-		ArrayList<Board> list = new BoardDao().selectList(conn, pi);
-		close(conn);
+		sqlSession.close();
 		
 		return list;
 	}
+	
+	@Override
+	public Board increaseCount(int boardNo) {
+		SqlSession sqlSession = Template.getSqlSession();
+		int result = bDao.increaseCount(sqlSession, boardNo);
+		
+		Board b = null;
+		if (result > 0) {
+			sqlSession.commit();
+			b = bDao.selectBoard(sqlSession, boardNo);
+		} else {
+			sqlSession.rollback();
+		}
+		
+		return b;
+	}
+	
+	@Override
+	public ArrayList<Board> selectMyPageBoardList(String loginId) {
+		SqlSession sqlSession = Template.getSqlSession();
+		ArrayList<Board> list = bDao.selectMyPageBoardList(sqlSession, loginId);
+		
+		sqlSession.close();
+		
+		return list;
+		
+	}
+	
+	@Override
+	public int insertBoard(Board b, BoardFile bf) {
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result1 = bDao.insertBoard(sqlSession, b);
+		int result2 = 1;
+		
+		if(bf != null) {
+			result2 = bDao.insertBoardFile(sqlSession, bf);
+		}
+		
+		if(result1 > 0 && result2 > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		
+		sqlSession.close();
+		return result1 *  result2;
+	}
+	// ----------------- 마이바티스 이전 ------------------------
+	
 	
 	public int createBoard(String memId, String title, String content, String postType) {
 		Connection conn = getConnection();
@@ -45,44 +103,6 @@ public class BoardService {
         return new BoardDao().getPostsByMemberId(memId);
     }
 	
-	public Board increaseCount(int boardNo) {
-		Connection conn = getConnection();
-		
-		BoardDao bDao = new BoardDao();
-		int result = bDao.increaseCount(conn, boardNo);
-		
-		Board b = null;
-		if(result > 0) {
-			commit(conn);
-			b = bDao.selectBoard(conn, boardNo);
-		} else {
-			rollback(conn);
-		}
-		
-		close(conn);
-		
-		return b;
-	}
-	
-	public int insertBoard(Board b, BoardFile bf) {
-		Connection conn = getConnection();
-		BoardDao bDao = new BoardDao();
-		
-		int result1 = bDao.insertBoard(conn, b);
-		int result2 = 1;
-		
-		if(bf != null) {
-			result2 = bDao.insertBoardFile(conn, bf);
-		}
-		
-		if(result1 > 0 && result2 > 0) {
-			commit(conn);
-		} else {
-			rollback(conn);
-		}
-		
-		return result1 *  result2;
-	}
 	
 	public int deleteBoard(HttpServletRequest request, int boardNo) {
 		Connection conn = getConnection();
@@ -118,12 +138,5 @@ public class BoardService {
 		close(conn);
 	
 		return result;
-	}
-	
-	public BoardFile fileDownload(int boardNo) {
-		Connection conn = getConnection();
-		BoardFileDao bfDao = new BoardFileDao();
-		
-		BoardFile bf = bfDao.fileDownload(conn, boardNo);
 	}
 }

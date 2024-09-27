@@ -2,14 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="member.Member, member.MemberDao"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="board.BoardService"%>
+<%@ page import="board.BoardServiceImpl"%>
 <%@ page import="board.Board"%>
 <%@ page import="java.util.List"%>
 <%
 String contextPath = request.getContextPath();
 String memId = (String) session.getAttribute("login");
-BoardService boardService = new BoardService();
-List<Board> posts = boardService.getUserPosts(memId);
+BoardServiceImpl boardService = new BoardServiceImpl();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -377,13 +376,13 @@ body {
 					<div class="posts-section">
 						<h5>내 게시글</h5>
 						<ul>
-							<%
-							for (Board post : posts) {
-							%>
-							<li><strong><%=post.getTitle()%></strong>: <%=post.getContent()%></li>
-							<%
-							}
-							%>
+						<c:forEach var="b" items="${list}">
+						<li>
+							${b.title} <br>
+							<a href="detail.bo?bno=${b.commNo}">게시글 들어가기</a>
+							<hr>
+						</li>
+						</c:forEach>
 						</ul>
 						<div class="view-more">더 보기</div>
 					</div>

@@ -28,5 +28,6 @@
     <fullyQualifiedTypeName name="com.kh.board.model.vo.Reply"/>
     <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
     <fullyQualifiedTypeName name="java.lang.Override"/>
+    <fullyQualifiedTypeName name="common.Template"/>
     <fullyQualifiedTypeName name="org.apache.ibatis.session.SqlSession"/>
 </qualifiedTypeNameHistroy>

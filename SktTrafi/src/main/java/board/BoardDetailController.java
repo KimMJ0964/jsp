@@ -17,24 +17,18 @@ public class BoardDetailController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int boardNo = Integer.parseInt(request.getParameter("bno"));
-		System.out.println("게시글 번호 : " + boardNo);
-		BoardService bService = new BoardService();
-		BoardService bfService = new BoardService();
-		//조회수 1증가시키고 디테일 페이지정보 가져오기
+		
+		BoardService bService = new BoardServiceImpl();
+		//조회수 증가 + 상세조회
 		Board b = bService.increaseCount(boardNo);
-		BoardFile bf = bfService.fileDownload(boardNo);
 		
 		if(b != null) {
-			request.setAttribute("board", b);
-			
-			if(bf != null) {
-				request.setAttribute("boardFile", bf);
-			}
-			
+			request.setAttribute("b", b);
 			request.getRequestDispatcher("views/board/boardView.jsp").forward(request, response);
 		} else {
-			request.setAttribute("errorMsg", "게시글 조회 실패");
+			request.setAttribute("errorMsg", "상세조회 실패");
 			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+		
 		}
 	}
 

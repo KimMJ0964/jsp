@@ -19,7 +19,7 @@ public class BoardDeleteController extends HttpServlet {
 		int boardNo = Integer.parseInt(request.getParameter("bno"));
 		String contextPath = request.getContextPath();
 		
-		BoardService bService = new BoardService();
+		BoardServiceImpl bService = new BoardServiceImpl();
 		int result = bService.deleteBoard(request, boardNo);
 		
 		if(result > 0) {

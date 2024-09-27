@@ -12,10 +12,10 @@ public class MemberServiceImpl {
 	 private MemberDao memberDao = new MemberDao();
 
 	    // 사용자 정보 업데이트 로직
-	 	public Member updateMember(Member member) {
+	 	public int updateMember(Member member) {
 	 		SqlSession sqlSession = Template.getSqlSession();
 	 		System.out.println("Service Member : " + member);
-	 		Member updateUser = memberDao.updateMember(sqlSession, member);
+	 		int updateUser = memberDao.updateMember(sqlSession, member);
 			
 			sqlSession.close();
 			System.out.println("updateUser : " + updateUser);

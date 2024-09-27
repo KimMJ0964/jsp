@@ -1,7 +1,11 @@
 package myPage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import board.Board;
+import board.BoardService;
+import board.BoardServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +22,12 @@ public class myPageLoginSessionTest extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setAttribute("login", "USER02");
+		
+		// 내 게시글
+		String loginId = (String) session.getAttribute("login");
+		BoardService bService = new BoardServiceImpl();
+		ArrayList<Board> list = bService.selectMyPageBoardList(loginId);
+		request.setAttribute("list", list);
 		
 		String loginValue = (String) session.getAttribute("login");
 	    System.out.println("Session login value: " + loginValue);

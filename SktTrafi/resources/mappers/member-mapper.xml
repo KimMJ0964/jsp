@@ -22,13 +22,21 @@
   			<select id="각 sql문의 식별자" [parameterType="전달받을 자바타입"] resultMap="결과 객체" | resultType="결과 타입">
   			</select>
    -->
-  <update id="updateMember" parameterType="Member" resultMap="memberResultSet">
-  	UPDATE MEMBER 
-  	SET mem_name = #{memName},
-        phone = #{phone},
-        address = #{address},
-        mem_no = #{memNo},
-        email = #{email}
-    WHERE mem_id = #{memId}
+  <update id="updateMember" parameterType="Member">
+	  	UPDATE MEMBER 
+	  	SET MEM_NAME = #{memName},
+	        PHONE = #{phone},
+	        ADDRESS = #{address},
+	        MEM_NO = #{memNo},
+	        EMAIL = #{email}
+	    WHERE MEM_ID = #{memId}
   </update>
+  
+   <!--
+  <update id="increaseCount" parameterType="_int">
+  		UPDATE COMMUNITY
+  		   SET VIEW_COUNT = VIEW_COUNT + 1
+  		 WHERE COMM_NO = #{boardNo}
+  	</update>
+   -->
 </mapper>

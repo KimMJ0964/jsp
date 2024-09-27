@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="board.Board"%>
 <%
-Board b = (Board) request.getAttribute("board");
 String contextPath = request.getContextPath();
-String testLoginSession = "user01";		// 로그인 임시 세션
 %>
+<c:set var="testLoginSession" value="user01" />
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -153,42 +153,37 @@ body {
 			<table class="table text-center" style="margin-bottom: 0px;">
 				<tr>
 					<td colspan="5"
-						style="text-align: center; border: 2px solid #C8C8C8; background-color: #ececec; font-weight: bold;"><%=b.getTitle()%></td>
+						style="text-align: center; border: 2px solid #C8C8C8; background-color: #ececec; font-weight: bold;">${b.title}</td>
 				</tr>
 				<tr>
-					<td style="background-color: #ececec;">아이디: <%=b.getMemId()%></td>
-					<td style="background-color: #ececec;">작성일: <%=b.getCreateDate()%></td>
-					<td style="background-color: #ececec;">유형: <%=b.getType()%></td>
-					<td style="background-color: #ececec;">조회수: <%=b.getViewCount()%></td>
-					<td style="background-color: #ececec;">좋아요: <%=b.getLikeCount()%></td>
+					<td style="background-color: #ececec;">아이디: ${b.memId }</td>
+					<td style="background-color: #ececec;">작성일: ${b.createDate}</td>
+					<td style="background-color: #ececec;">유형: ${b.type}</td>
+					<td style="background-color: #ececec;">조회수: ${b.viewCount}</td>
+					<td style="background-color: #ececec;">좋아요: ${b.likeCount}</td>
 				</tr>
 				<tr>
 					<td colspan="5" style="text-align: left; padding: 10px;">
-						<div class="post-content"><%=b.getContent()%></div>
+						<div class="post-content">${b.content}</div>
 					</td>
 				</tr>
 				<!-- 첨부파일 Row -->
 				<tr>
 					<td colspan="5"
 						style="border: 2px solid #C8C8C8; background-color: #f9f9f9; text-align: left; padding: 10px;">
-						<div class="attachment">
-							<%if(at == null) { %> 
-	                    		첨부파일이 없습니다. 
-                    		<% } else {%>
-	                   			 <a download="<%=at.getOriginName() %>" href="<%=contextPath%>/<%=at.getFilePath() + at.getChangeName()%>"><%=at.getOriginName() %></a>
-                			<%} %>
-						</div>
+						<div class="attachment"></div>
 					</td>
 				</tr>
 				<!-- 게시글 주인 버튼 -->
 				<tr>
 					<td colspan="5">
 						<div align="center">
-							<a href="<%=contextPath %>/board.bo?cpage=1" class="btn btn-sm btn-secondary">목록가기</a>
-							<%	if (testLoginSession.equals(b.getMemId())) {	%>
-								<a href="<%=contextPath%>/updateBoard.bo?bno=<%=b.getCommNo()%>" class="btn btn-sm btn-warning">수정하기</a>
-								<a href="<%=contextPath%>/deleteBoard.bo?bno=<%=b.getCommNo()%>" class="btn btn-sm btn-danger">삭제하기</a>
-							<%	}	%>
+							<a href="<%=contextPath%>/board.bo?cpage=1"
+								class="btn btn-sm btn-secondary">목록가기</a>
+							<c:if test="${testLoginSession == b.memId}">
+								<a href="${pageContext.request.contextPath}/updateBoard.bo?bno=${b.commNo}" class="btn btn-sm btn-warning">수정하기</a>
+								<a href="${pageContext.request.contextPath}/deleteBoard.bo?bno=${b.commNo}" class="btn btn-sm btn-danger">삭제하기</a>
+							</c:if>
 						</div>
 					</td>
 				</tr>

@@ -89,7 +89,7 @@ public class BoardCreateController extends HttpServlet {
 				}
 			}
 
-			int result = new BoardService().insertBoard(b, bf);
+			int result = new BoardServiceImpl().insertBoard(b, bf);
 			if (result > 0) { // 성공 -> 게시글 목록(jsp/list.bo?cage=1)
 				request.getSession().setAttribute("alertMsg", "일반게시글 작성 성공");
 				response.sendRedirect(request.getContextPath() + "/board.bo?cpage=1");
